@@ -1,6 +1,6 @@
 // jest.setup.js
 
-const { closeDb, getDatabase } = require("../config/db");
+const { query, closeDb, getDatabase } = require("../config/db");
 const { BCRYPT_WORK_FACTOR } = require("../config/config");
 const bcrypt = require("bcrypt");
 
@@ -11,13 +11,13 @@ beforeAll(async () => {
 });
 
 async function commonBeforeAll() {
-  await db.query("DELETE FROM items");
-  await db.query("DELETE FROM boxes");
-  await db.query("DELETE FROM moves");
-  await db.query("DELETE FROM users");
+  await query("DELETE FROM items");
+  await query("DELETE FROM boxes");
+  await query("DELETE FROM moves");
+  await query("DELETE FROM users");
 
   const hashedPassword = await bcrypt.hash("password123", BCRYPT_WORK_FACTOR);
-  await db.query(`
+  await query(`
     INSERT INTO users (username, password, email, admin)
     VALUES ('testuser1', $1, 'test1@test.com', FALSE),
            ('testuser2', $1, 'test2@test.com', FALSE),
@@ -25,7 +25,7 @@ async function commonBeforeAll() {
     [hashedPassword]
   );
 
-  const moveResults = await db.query(`
+  const moveResults = await query(`
     INSERT INTO moves (location, date, username)
     VALUES ('Location 1', '2024-01-01', 'testuser1'),
            ('Location 2', '2024-02-01', 'testuser1'),
@@ -34,17 +34,17 @@ async function commonBeforeAll() {
   );
   const moveIds = moveResults.rows.map(r => r.id);
 
-  const boxResults = await db.query(`
+  const boxResults = await query(`
     INSERT INTO boxes (name, room, move)
-    VALUES ('Living Room', $1),
-           ('Kitchen', $1),
-           ('Bedroom', $2)
+    VALUES ('Box1', 'Living Room', $1),
+           ('Box2', 'Kitchen', $1),
+           ('Box3', 'Bedroom', $2)
     RETURNING id`,
     [moveIds[0], moveIds[1]]
   );
   const boxIds = boxResults.rows.map(r => r.id);
 
-  await db.query(`
+  await query(`
     INSERT INTO items (description, image, box)
     VALUES ('Item 1', 'image1.jpg', $1),
            ('Item 2', 'image2.jpg', $1),
@@ -54,11 +54,11 @@ async function commonBeforeAll() {
 }
 
 async function commonBeforeEach() {
-  await db.query("BEGIN");
+  await query("BEGIN");
 }
 
 async function commonAfterEach() {
-  await db.query("ROLLBACK");
+  await query("ROLLBACK");
 }
 
 async function commonAfterAll() {

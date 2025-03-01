@@ -1,6 +1,6 @@
 "use strict";
 
-const { db } = require('../config/db');
+const { query } = require('../config/db');
 const bcrypt = require("bcrypt");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 const {
@@ -15,7 +15,7 @@ class User {
 
   static async authenticate(username, password) {
 
-    const result = await db.query(
+    const result = await query(
       `SELECT username,
                   password,
                   email
@@ -40,7 +40,7 @@ class User {
 
   static async register(
     { username, password, email }) {
-    const duplicateCheck = await db.query(
+    const duplicateCheck = await query(
       `SELECT username
            FROM users
            WHERE username = $1`,
@@ -53,7 +53,7 @@ class User {
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
-    const result = await db.query(
+    const result = await query(
       `INSERT INTO users
            (username,
             password,
@@ -73,7 +73,7 @@ class User {
   }
 
   static async findAll() {
-    const result = await db.query(
+    const result = await query(
       `SELECT *
            FROM users
            ORDER BY username`,
@@ -83,7 +83,7 @@ class User {
   }
 
   static async get(username) {
-    const userRes = await db.query(
+    const userRes = await query(
       `SELECT username,
                   email,
                   admin
@@ -96,7 +96,7 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
 
-    const movesRes = await db.query(
+    const movesRes = await query(
       `SELECT id, location, date, username
        FROM moves
        WHERE username = $1`,
@@ -128,7 +128,7 @@ class User {
                       RETURNING username,
                                 email,
                                 admin`;
-    const result = await db.query(querySql, [...values, username]);
+    const result = await query(querySql, [...values, username]);
     const user = result.rows[0];
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
@@ -138,7 +138,7 @@ class User {
   }
 
   static async remove(username) {
-    let result = await db.query(
+    let result = await query(
       `DELETE
            FROM users
            WHERE username = $1

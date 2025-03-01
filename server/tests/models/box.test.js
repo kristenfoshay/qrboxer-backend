@@ -1,4 +1,4 @@
-const { db, closeDb } = require("../../config/db");
+const { query, closeDb } = require("../../config/db");
 const { NotFoundError } = require("../../expressError");
 const Box = require("../../models/box");
 
@@ -6,16 +6,16 @@ describe("Box Model Tests", () => {
   let testMoveId;
 
   beforeEach(async () => {
-    await db.query("DELETE FROM items");
-    await db.query("DELETE FROM boxes");
-    await db.query("DELETE FROM moves");
-    await db.query("DELETE FROM users");
+    await query("DELETE FROM items");
+    await query("DELETE FROM boxes");
+    await query("DELETE FROM moves");
+    await query("DELETE FROM users");
 
-    await db.query(
+    await query(
       "INSERT INTO users (username, password, email, admin) VALUES ('testuser', 'password', 'test@test.com', false)"
     );
 
-    const moveRes = await db.query(
+    const moveRes = await query(
       "INSERT INTO moves (location, date, username) VALUES ('Test Location', '2024-01-01', 'testuser') RETURNING id"
     );
     testMoveId = moveRes.rows[0].id;
@@ -80,11 +80,11 @@ describe("Box Model Tests", () => {
 
   describe("findAllbyUser", () => {
     test("works with move filter", async () => {
-      await db.query(
+      await query(
         "INSERT INTO boxes (name, room, move) VALUES ($1, $2, $3)",
         ["Box 1", "Living Room", testMoveId]
       );
-      await db.query(
+      await query(
         "INSERT INTO boxes (name, room, move) VALUES ($1, $2, $3)",
         ["Box 2", "Kitchen", testMoveId]
       );
@@ -118,7 +118,7 @@ describe("Box Model Tests", () => {
 
   describe("get", () => {
     test("works", async () => {
-      const result = await db.query(
+      const result = await query(
         "INSERT INTO boxes (name, room, move) VALUES ($1, $2, $3) RETURNING id",
         ["Box 1", "Living Room", testMoveId]
       );
@@ -187,7 +187,7 @@ describe("Box Model Tests", () => {
 
   describe("update", () => {
     test("works", async () => {
-      const result = await db.query(
+      const result = await query(
         "INSERT INTO boxes (name, room, move) VALUES ($1, $2, $3) RETURNING id",
         ["Box 1", "Living Room", testMoveId]
       );
@@ -207,7 +207,7 @@ describe("Box Model Tests", () => {
         location: null
       });
 
-      const found = await db.query(
+      const found = await query(
         "SELECT * FROM boxes WHERE id = $1",
         [boxId]
       );
@@ -235,7 +235,7 @@ describe("Box Model Tests", () => {
 
   describe("remove", () => {
     test("works", async () => {
-      const result = await db.query(
+      const result = await query(
         "INSERT INTO boxes (name, room, move) VALUES ($1, $2, $3) RETURNING id",
         ["Box 1", "Living Room", testMoveId]
       );
@@ -243,7 +243,7 @@ describe("Box Model Tests", () => {
 
       await Box.remove(boxId);
 
-      const found = await db.query(
+      const found = await query(
         "SELECT * FROM boxes WHERE id = $1",
         [boxId]
       );

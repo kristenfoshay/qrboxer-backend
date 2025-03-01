@@ -1,22 +1,22 @@
 const request = require("supertest");
 const app = require("../../app");
-const { db, closeDb } = require("../../config/db");
+const { query, closeDb } = require("../../config/db");
 const Box = require("../../models/box");
 
 describe("Box Routes Automated Tests", () => {
   let testMoveId;
   
   beforeAll(async () => {
-    await db.query("DELETE FROM items");
-    await db.query("DELETE FROM boxes");
-    await db.query("DELETE FROM moves");
-    await db.query("DELETE FROM users");
+    await query("DELETE FROM items");
+    await query("DELETE FROM boxes");
+    await query("DELETE FROM moves");
+    await query("DELETE FROM users");
 
-    await db.query("INSERT INTO users (username, password, email, admin) VALUES ($1, $2, $3, $4)",
+    await query("INSERT INTO users (username, password, email, admin) VALUES ($1, $2, $3, $4)",
       ["testuser", "password", "test@test.com", false]
     );
 
-    const moveRes = await db.query(
+    const moveRes = await query(
       "INSERT INTO moves (location, date, username) VALUES ($1, $2, $3) RETURNING id",
       ["Test Location", "2024-01-01", "testuser"]
     );
@@ -24,14 +24,14 @@ describe("Box Routes Automated Tests", () => {
   });
 
   beforeEach(async () => {
-    await db.query("DELETE FROM boxes");
+    await query("DELETE FROM boxes");
   });
 
   afterAll(async () => {
-    await db.query("DELETE FROM items");
-    await db.query("DELETE FROM boxes");
-    await db.query("DELETE FROM moves");
-    await db.query("DELETE FROM users");
+    await query("DELETE FROM items");
+    await query("DELETE FROM boxes");
+    await query("DELETE FROM moves");
+    await query("DELETE FROM users");
     await closeDb();
   });
 

@@ -1,12 +1,12 @@
 "use strict";
 
-const { db } = require("../config/db");
+const { query } = require("../config/db");
 const { NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Item {
   static async create({ description, image, box }) {
-    const result = await db.query(
+    const result = await query(
       `INSERT INTO items (description, image, box)
        VALUES ($1, $2, $3)
        RETURNING id, description, image, box`,
@@ -21,7 +21,7 @@ class Item {
   }
 
   static async findAll() {
-    const itemRes = await db.query(
+    const itemRes = await query(
       `SELECT id,
               description,
               image,
@@ -32,7 +32,7 @@ class Item {
   }
 
   static async get(id) {
-    const itemRes = await db.query(
+    const itemRes = await query(
       `SELECT id,
               description,
               image,
@@ -48,7 +48,7 @@ class Item {
   }
 
   static async findBoxItems(box) {
-    const itemRes = await db.query(
+    const itemRes = await query(
       `SELECT id,
               description,
               image,
@@ -74,7 +74,7 @@ class Item {
                       description,
                       image,
                       box`;
-    const result = await db.query(querySql, [...values, id]);
+    const result = await query(querySql, [...values, id]);
     const item = result.rows[0];
 
     if (!item) throw new NotFoundError(`No item: ${id}`);
@@ -83,7 +83,7 @@ class Item {
   }
 
   static async remove(id) {
-    const result = await db.query(
+    const result = await query(
       `DELETE
        FROM items
        WHERE id = $1
@@ -94,7 +94,7 @@ class Item {
   }
 
   static async boxremoveitem(box) {
-    const result = await db.query(
+    const result = await query(
       `DELETE
        FROM items
        WHERE box = $1`, [box]);

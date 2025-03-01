@@ -4,7 +4,6 @@ const Move = require("../../models/move");
 const Box = require("../../models/box");
 const { NotFoundError, BadRequestError } = require("../../expressError");
 
-// Mock the Move and Box models
 jest.mock("../../models/move");
 jest.mock("../../models/box");
 

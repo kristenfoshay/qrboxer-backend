@@ -1,12 +1,12 @@
 "use strict";
 
-const { db } = require('../config/db');
+const { query } = require('../config/db');
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Move {
   static async create({ location, date, username }) {
-    const duplicateCheck = await db.query(
+    const duplicateCheck = await query(
       `SELECT date
        FROM moves
        WHERE date = $1`,
@@ -15,7 +15,7 @@ class Move {
     if (duplicateCheck.rows[0])
       throw new BadRequestError(`Duplicate move: ${date}`);
 
-    const result = await db.query(
+    const result = await query(
       `INSERT INTO moves
        (location, date, username)
        VALUES ($1, $2, $3)
@@ -29,7 +29,7 @@ class Move {
   }
 
   static async get(id) {
-    const moveRes = await db.query(
+    const moveRes = await query(
       `SELECT m.id,
               m.location,
               m.date,
@@ -87,7 +87,7 @@ class Move {
       LEFT JOIN boxes b ON m.id = b.move
       GROUP BY m.id, m.location, m.date, m.username`;
 
-    const result = await db.query(querySql, [...values, id]);
+    const result = await query(querySql, [...values, id]);
     const move = result.rows[0];
 
     if (!move) throw new NotFoundError(`No move: ${id}`);
@@ -96,7 +96,7 @@ class Move {
   }
 
   static async findAll(username) {
-    const moveRes = await db.query(
+    const moveRes = await query(
       `SELECT m.id,
               m.location,
               m.date,
@@ -123,7 +123,7 @@ class Move {
   }
 
   static async remove(id) {
-    const result = await db.query(
+    const result = await query(
       `DELETE
        FROM moves
        WHERE id = $1

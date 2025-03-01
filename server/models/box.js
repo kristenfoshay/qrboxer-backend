@@ -1,12 +1,12 @@
 "use strict";
 
-const { db } = require('../config/db');
+const { query } = require('../config/db');
 const { NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Box {
   static async create({ name, description, location, room, move }) {
-    const result = await db.query(
+    const createResult = await query(
       `INSERT INTO boxes (name,
                          description,
                          location,
@@ -21,13 +21,13 @@ class Box {
         room,
         move
       ]);
-    let box = result.rows[0];
+    let box = createResult.rows[0];
 
     return box;
   }
 
   static async findAll(filters = {}) {
-    let query = `SELECT id,
+    let findAllResult = `SELECT id,
                         name,
                         description,
                         location,
@@ -37,16 +37,16 @@ class Box {
     let values = [];
     
     if (filters.location) {
-      query += ` WHERE location = $1`;
+      findAllResult += ` WHERE location = $1`;
       values.push(filters.location);
     }
 
-    const boxRes = await db.query(query, values);
+    const boxRes = await query(findAllResult, values);
     return boxRes.rows;
   }
 
   static async findAllbyUser({ move }) {
-    const boxRes = await db.query(
+    const findAllbyUserRes = await query(
       `SELECT id,
               name,
               description,
@@ -56,11 +56,11 @@ class Box {
        FROM boxes
        WHERE move = $1`, [move]);
 
-    return boxRes.rows;
+    return findAllbyUserRes.rows;
   }
 
   static async get(id) {
-    const boxRes = await db.query(
+    const getResult = await query(
       `SELECT id,
               name,
               description,
@@ -70,7 +70,7 @@ class Box {
        FROM boxes
        WHERE id = $1`, [id]);
 
-    const box = boxRes.rows[0];
+    const box = getResult.rows[0];
 
     if (!box) throw new NotFoundError(`No box: ${id}`);
 
@@ -78,7 +78,7 @@ class Box {
   }
 
   static async getMoveBoxes(move) {
-    const boxesRes = await db.query(
+    const getMoveBoxesRes = await query(
       `SELECT id,
               name,
               description,
@@ -88,7 +88,7 @@ class Box {
        FROM boxes
        WHERE move = $1`, [move]);
 
-    const boxes = boxesRes.rows;
+    const boxes = getMoveBoxesRes.rows;
 
     if (!boxes) throw new NotFoundError(`No boxes for move: ${move}`);
 
@@ -110,7 +110,7 @@ class Box {
                                 location,
                                 room,
                                 move`;
-    const result = await db.query(querySql, [...values, id]);
+    const result = await query(querySql, [...values, id]);
     const box = result.rows[0];
 
     if (!box) throw new NotFoundError(`No box: ${id}`);
@@ -119,12 +119,12 @@ class Box {
   }
 
   static async remove(id) {
-    const result = await db.query(
+    const removeResult = await query(
       `DELETE
        FROM boxes
        WHERE id = $1
        RETURNING id`, [id]);
-    const box = result.rows[0];
+    const box = removeResult.rows[0];
 
     if (!box) throw new NotFoundError(`No box: ${id}`);
   }

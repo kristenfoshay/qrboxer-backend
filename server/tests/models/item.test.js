@@ -1,4 +1,4 @@
-const { db, closeDb } = require("../../config/db");
+const { query, closeDb } = require("../../config/db");
 const { NotFoundError } = require("../../expressError");
 const Item = require("../../models/item");
 
@@ -7,19 +7,19 @@ describe("Item Model Tests", () => {
 
   beforeEach(async () => {
     // Clean tables in correct order
-    await db.query("DELETE FROM items");
-    await db.query("DELETE FROM boxes");
-    await db.query("DELETE FROM moves");
-    await db.query("DELETE FROM users");
+    await query("DELETE FROM items");
+    await query("DELETE FROM boxes");
+    await query("DELETE FROM moves");
+    await query("DELETE FROM users");
 
     // Create test user
-    await db.query(`
+    await query(`
       INSERT INTO users (username, password, email, admin)
       VALUES ('testuser', 'password', 'test@test.com', false)`
     );
 
     // Create test move
-    const moveRes = await db.query(`
+    const moveRes = await query(`
       INSERT INTO moves (location, date, username)
       VALUES ('Test Location', '2024-01-01', 'testuser')
       RETURNING id`
@@ -27,7 +27,7 @@ describe("Item Model Tests", () => {
     const testMoveId = moveRes.rows[0].id;
 
     // Create test box
-    const boxRes = await db.query(`
+    const boxRes = await query(`
       INSERT INTO boxes (name, room, move)
       VALUES ('Test Box', 'Living Room', $1)
       RETURNING id`,
@@ -85,7 +85,7 @@ describe("Item Model Tests", () => {
   });
 
   test("can get item by id", async () => {
-    const result = await db.query(
+    const result = await query(
       `INSERT INTO items (description, image, box)
        VALUES ($1, $2, $3)
        RETURNING id`,
@@ -132,7 +132,7 @@ describe("Item Model Tests", () => {
   });
 
   test("can update item", async () => {
-    const result = await db.query(
+    const result = await query(
       `INSERT INTO items (description, image, box)
        VALUES ($1, $2, $3)
        RETURNING id`,
@@ -163,7 +163,7 @@ describe("Item Model Tests", () => {
   });
 
   test("can delete item", async () => {
-    const result = await db.query(
+    const result = await query(
       `INSERT INTO items (description, image, box)
        VALUES ($1, $2, $3)
        RETURNING id`,
@@ -173,7 +173,7 @@ describe("Item Model Tests", () => {
 
     await Item.remove(itemId);
 
-    const found = await db.query(
+    const found = await query(
       "SELECT * FROM items WHERE id = $1",
       [itemId]
     );

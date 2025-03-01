@@ -2,12 +2,12 @@ const request = require("supertest");
 const app = require("../../app");
 const User = require("../../models/user");
 const { createToken } = require("../../helpers/tokens");
-const { db, closeDb } = require("../../config/db");
+const { query, closeDb } = require("../../config/db");
 
 describe("Auth Routes Test", () => {
   beforeEach(async () => {
-    await db.query("DELETE FROM moves");
-    await db.query("DELETE FROM users");
+    await query("DELETE FROM moves");
+    await query("DELETE FROM users");
     
     await User.register({
       username: "testuser",

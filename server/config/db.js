@@ -16,6 +16,15 @@ async function getDatabase() {
   return db;
 }
 
+async function connect() {
+  const client = getDatabase();
+  // Only connect if not already connected
+  if (!client._connected) {
+    await client.connect();
+  }
+  return client;
+}
+
 async function query(text, params) {
   const client = await getDatabase();
   try {
@@ -35,6 +44,7 @@ async function closeDb() {
 
 module.exports = {
   query,
+  connect,
   closeDb,
   getDatabase
 };

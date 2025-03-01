@@ -1,4 +1,4 @@
-const { db, closeDb } = require("../../config/db");
+const { query, closeDb } = require("../../config/db");
 const User = require("../../models/user");
 const bcrypt = require("bcrypt");
 const { 
@@ -10,8 +10,8 @@ const { BCRYPT_WORK_FACTOR } = require("../../config/config");
 
 describe("User Model Tests", () => {
   beforeEach(async () => {
-    await db.query("DELETE FROM moves");
-    await db.query("DELETE FROM users");
+    await query("DELETE FROM moves");
+    await query("DELETE FROM users");
     
     await User.register({
       username: "testuser",
@@ -79,7 +79,7 @@ describe("User Model Tests", () => {
   /************************************** findAll */
   describe("findAll", () => {
     test("works", async () => {
-      await db.query("DELETE FROM users");
+      await query("DELETE FROM users");
       
       await User.register({
         username: "user1",
@@ -113,7 +113,7 @@ describe("User Model Tests", () => {
   /************************************** get */
   describe("get", () => {
     test("works", async () => {
-      await db.query(
+      await query(
         `INSERT INTO moves (location, date, username)
          VALUES ('Test Location', '2024-01-01', 'testuser')`
       );
@@ -164,7 +164,7 @@ describe("User Model Tests", () => {
   describe("remove", () => {
     test("works", async () => {
       await User.remove("testuser");
-      const found = await db.query(
+      const found = await query(
         "SELECT * FROM users WHERE username = 'testuser'"
       );
       expect(found.rows.length).toEqual(0);

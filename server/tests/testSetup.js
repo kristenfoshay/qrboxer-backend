@@ -1,24 +1,24 @@
 // tests/testSetup.js
 
-const { db, closeDb } = require("../db");
+const { query, closeDb } = require("../config/db");
 
 async function commonBeforeAll() {
   // Clean database
-  await db.query("DELETE FROM boxes");
+  await query("DELETE FROM boxes");
   
   // Add test data if needed
-  await db.query(`
+  await query(`
     INSERT INTO boxes (room, move)
     VALUES ('Test Room', 1)
   `);
 }
 
 async function commonBeforeEach() {
-  await db.query("BEGIN");
+  await query("BEGIN");
 }
 
 async function commonAfterEach() {
-  await db.query("ROLLBACK");
+  await query("ROLLBACK");
 }
 
 async function commonAfterAll() {
