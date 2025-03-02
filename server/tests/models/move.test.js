@@ -59,7 +59,6 @@ afterAll(commonAfterAll);
   /************************************** get */
 describe("get", () => {
   test("works", async () => {
-    // First we need a clean move for testing
     const moveResult = await query(
       `INSERT INTO moves (location, date, username)
        VALUES ($1, $2, $3)
@@ -89,6 +88,7 @@ describe("get", () => {
       }]
     });
   });
+});	
 
   /************************************** update */
   describe("update", () => {
@@ -233,6 +233,13 @@ describe("get", () => {
         date: "2024-07-01",
         username: "otheruser",
         boxes: []
+      },
+      {
+	id: expect.any(Number),
+	location: "Chicago",
+	date: "2024-08-01",
+	username: "otheruser",
+	boxes: []
       }
     ]);
   });
