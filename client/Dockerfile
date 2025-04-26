@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:16-alpine
 
 # Create app directory inside the container
 WORKDIR /usr/src/app
@@ -9,11 +9,20 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Install serve for production build
+RUN npm install -g serve
+
+# Copy config overrides
+COPY config-overrides.js ./
+
 # Copy the rest of your application code
 COPY . .
+
+# Build the app
+RUN npm run build
 
 # The port your React app runs on
 EXPOSE 3000
 
-# Command to start your app
-CMD ["npm", "start"]
+# Run a static server for production build
+CMD ["serve", "-s", "build", "-l", "3000"]
