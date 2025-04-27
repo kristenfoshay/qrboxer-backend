@@ -1,12 +1,47 @@
 .BoxCard {
-    display: inline-block;
-    max-height: 400px;
-    max-width: 300px;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-    margin-left: 1rem;
-    color: inherit;
-    border-radius: 6px 6px 6px 6px;
-    border: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  color: inherit;
+  border-radius: 6px;
+  border: none;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.BoxCard:hover {
+  box-shadow: var(--card-hover-shadow);
+}
+
+.BoxCard-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.BoxCard-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.BoxCard-text {
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.BoxCard-footer {
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 576px) {
+  .BoxCard-footer {
+    flex-direction: column;
+    gap: 0.5rem;
   }
+}

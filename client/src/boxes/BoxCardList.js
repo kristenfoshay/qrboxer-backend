@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BoxCard from "./BoxCard";
 import QRBoxerApi from "../api/api";
+import "../index.css";
 
 function BoxCardList({ id, location, date }) {
   console.log("line 6 boxcardlist", typeof(id));
@@ -21,22 +22,23 @@ function BoxCardList({ id, location, date }) {
 
   let contain = boxes;
     
-    boxes = contain.boxes;
+  boxes = contain.boxes;
     
 
-
   return (
-    <div className="BoxCardList">
-      {boxes.map(box => (
-        <BoxCard
-          key={box.id}
-          id={box.id}
-          room={box.room}
-          move={box.move}
-          location={location}
-          date={date}
-        />
-      ))}
+    <div className="container">
+      <div className="card-grid BoxCardList">
+        {boxes.map(box => (
+          <BoxCard
+            key={box.id}
+            id={box.id}
+            room={box.room}
+            move={box.move}
+            location={location}
+            date={date}
+          />
+        ))}
+      </div>
     </div>
   );
 }

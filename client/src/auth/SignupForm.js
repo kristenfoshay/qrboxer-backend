@@ -11,6 +11,8 @@ function SignupForm({ signup }) {
     username: "",
     password: "",
     email: "",
+    firstName: "",
+    lastName: ""
   }
   const [formData, setFormData] = useState(INITIAL_STATE);
   const [isValid, setIsValid] = useState(true);
@@ -80,6 +82,30 @@ function SignupForm({ signup }) {
             id="email"
             value={formData.email}
             placeholder="Email"
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="ml-3">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="firstName"
+            id="firstName"
+            value={formData.firstName}
+            placeholder="First Name"
+            onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group className="ml-3">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="lastName"
+            id="lastName"
+            value={formData.lastName}
+            placeholder="Last Name"
             onChange={handleChange}
           />
         </Form.Group>

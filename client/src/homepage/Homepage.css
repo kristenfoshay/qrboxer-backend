@@ -1,65 +1,87 @@
-@supports (-webkit-text-stroke: 1px black) {
-
-  #loggedin{
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    width: 100vw;
-    left: 0;
-    z-index: -1;
-    background-image: url("./movingboxes.jpg");
-    opacity: 0.9;
-    background-size: cover;
-    background-position: center center;
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-    
-    
-    }
-
-#loggedout{
-  height: 100vh;
+/* Common styles for both logged in and logged out states */
+#loggedin, #loggedout {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   position: absolute;
   top: 0;
-  width: 100vw;
+  width: 100%;
   left: 0;
-  z-index: -1;
-  background-image: url("./movingbox.jpg");
-  opacity: 0.7;
+  z-index: 1;
   background-size: cover;
   background-position: center center;
   color: white;
   text-align: center;
   padding: 1rem;
-  
-  
-  }
+}
 
-  #loggedout{
-    
-    font-family: Lobster, sans-serif;
-    font-size: xx-large;
-    color: white;
-    text-decoration: none;
-    text-shadow:
+#loggedin {
+  background-image: url("./movingboxes.jpg");
+  opacity: 0.9;
+}
+
+#loggedout {
+  background-image: url("./movingbox.jpg");
+  opacity: 0.7;
+  font-family: Lobster, sans-serif;
+  color: white;
+  text-decoration: none;
+  text-shadow:
     3px 3px 0 #000,
-  -1px -1px 0 #000,  
-   1px -1px 0 #000,
-   -1px 1px 0 #000,
+    -1px -1px 0 #000,  
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
     1px 1px 0 #000;
+}
+
+/* Responsive text sizing */
+#loggedout h1, #loggedin h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+#loggedout p, #loggedin p {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #loggedout h1, #loggedin h1 {
+    font-size: 2.5rem;
+  }
+  
+  #loggedout p, #loggedin p {
+    font-size: 1.1rem;
   }
 }
 
+@media (max-width: 480px) {
+  #loggedout h1, #loggedin h1 {
+    font-size: 2rem;
+  }
+  
+  #loggedout p, #loggedin p {
+    font-size: 1rem;
+  }
+}
+
+/* Button styles */
+.homepage-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+  .homepage-btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}
 
 /* Loggedout Background Image Citation: "moving." by GYLo is licensed under CC BY-ND 2.0. */
-
 /* Loggedin Background Image Citation: "Moving Boxes" by Reg Natarajan is licensed under CC BY 2.0. */

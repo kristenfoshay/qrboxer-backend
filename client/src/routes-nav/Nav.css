@@ -6,24 +6,91 @@
   margin: 0 auto;
   position: relative;
   z-index: 60;
-  box-shadow: 0 1px 20px 0 rgb(96 97 101 / 15%), 0 1px 2px 0 rgb(96 97 101 / 40%);
+  box-shadow: var(--nav-shadow);
+  padding: 0 15px;
+  align-items: center;
 }
-  
-  .Nav a {
-    font-family: lobster;
-    padding: 0.5em 0;
-    width: 10em;
-    display: inline-block;
-    color: black;
-    text-decoration: none;
+
+.Nav a {
+  font-family: lobster;
+  padding: 0.5em 0;
+  display: inline-block;
+  color: var(--secondary-color);
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.Nav1 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.Nav1 a {
+  width: auto;
+}
+
+.Nav a:hover {
+  background-color: white;
+  color: var(--secondary-color) !important;
+}
+
+.Nav a.active {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.Nav-logo {
+  height: 40px;
+  width: auto;
+}
+
+/* Mobile navigation */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: var(--secondary-color);
+  margin: 3px 0;
+  border-radius: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
   }
   
-  .Nav a:hover {
-    background-color: white;
-    color: black !important;
+  .Nav1 {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    background: white;
+    box-shadow: var(--nav-shadow);
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
   }
   
-  .Nav a.active {
-    font-weight: bold;
-    color: blueviolet;
+  .Nav1.expanded {
+    max-height: 400px;
   }
+  
+  .Nav1 a {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+  }
+}

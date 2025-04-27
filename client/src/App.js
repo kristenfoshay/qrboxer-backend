@@ -119,11 +119,9 @@ function App() {
   }
 
   function logout() {
-
     console.log("logging out")
     setToken(null);
     setCurrentUser(null);
-
   }
 
   if (!infoLoaded) return <LoadingSpinner />;
@@ -134,14 +132,16 @@ function App() {
         value={{ currentUser, setCurrentUser }}>
         <div className="App">
           <NavBar logout={logout} />
-          <Routes 
-          login={login} 
-          signup={signup} 
-          createmove={createmove} 
-          createbox={createbox} 
-          createitem={createitem} 
-          removebox={removebox} 
-          removeitem={removeitem} />
+          <main className="App-content">
+            <Routes 
+              login={login} 
+              signup={signup} 
+              createmove={createmove} 
+              createbox={createbox} 
+              createitem={createitem} 
+              removebox={removebox} 
+              removeitem={removeitem} />
+          </main>
         </div>
       </UserContext.Provider>
     </BrowserRouter>
