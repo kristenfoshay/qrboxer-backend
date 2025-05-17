@@ -32,26 +32,36 @@ function SignupForm({ signup }) {
   }
 
   async function handleSubmit(event) {
-
     event.preventDefault();
-    let result = await signup(formData);
+    console.log("SignupForm - handleSubmit - Form data:", formData);
+    
+    try {
+      let result = await signup(formData);
+      console.log("SignupForm - handleSubmit - Result:", result);
 
-    if (result.success) {
-      setIsValid(true);
-      history.push("/");
-    } else {
+      if (result.success) {
+        console.log("SignupForm - Registration successful, redirecting to home");
+        setIsValid(true);
+        history.push("/");
+      } else {
+        console.error("SignupForm - Registration failed:", result.errors);
+        setIsValid(false);
+        setFormErrors(result.errors);
+      }
+    } catch (error) {
+      console.error("SignupForm - Unhandled error during signup:", error);
       setIsValid(false);
-      setFormErrors(result.errors);
+      setFormErrors(["An unexpected error occurred"]);
     }
   }
 
   return (
 
-    <div class="form-group">
+    <div className="form-group">
 
       <div> {isValid
         ? null
-        : <Alert variant="danger">Oops! That username is already taken! </Alert>
+        : <Alert variant="danger">{formErrors.length ? formErrors.join(", ") : "Registration failed. Please try again."}</Alert>
       }
 
       </div>
@@ -62,24 +72,23 @@ function SignupForm({ signup }) {
       <Form onSubmit={handleSubmit}>
 
         <Form.Group className="ml-3">
-          <Form.Label >Username</Form.Label>
+          <Form.Label htmlFor="username">Username</Form.Label>
           <Form.Control
-            type="username"
-            name="username"
             id="username"
+            type="text"
+            name="username"
             value={formData.username}
             placeholder="Username"
             onChange={handleChange}
           />
-
         </Form.Group>
 
         <Form.Group className="ml-3">
-          <Form.Label className="label">Email</Form.Label>
+          <Form.Label htmlFor="email">Email</Form.Label>
           <Form.Control
+            id="email"
             type="email"
             name="email"
-            id="email"
             value={formData.email}
             placeholder="Email"
             onChange={handleChange}
@@ -87,11 +96,11 @@ function SignupForm({ signup }) {
         </Form.Group>
 
         <Form.Group className="ml-3">
-          <Form.Label>First Name</Form.Label>
+          <Form.Label htmlFor="firstName">First Name</Form.Label>
           <Form.Control
+            id="firstName"
             type="text"
             name="firstName"
-            id="firstName"
             value={formData.firstName}
             placeholder="First Name"
             onChange={handleChange}
@@ -99,11 +108,11 @@ function SignupForm({ signup }) {
         </Form.Group>
 
         <Form.Group className="ml-3">
-          <Form.Label>Last Name</Form.Label>
+          <Form.Label htmlFor="lastName">Last Name</Form.Label>
           <Form.Control
+            id="lastName"
             type="text"
             name="lastName"
-            id="lastName"
             value={formData.lastName}
             placeholder="Last Name"
             onChange={handleChange}
@@ -111,11 +120,11 @@ function SignupForm({ signup }) {
         </Form.Group>
 
         <Form.Group className="ml-3">
-          <Form.Label>Password</Form.Label>
+          <Form.Label htmlFor="password">Password</Form.Label>
           <Form.Control
+            id="password"
             type="password"
             name="password"
-            id="password"
             value={formData.password}
             placeholder="Password"
             onChange={handleChange}

@@ -3,6 +3,7 @@ const app = require("../../app");
 const User = require("../../models/user");
 const { createToken } = require("../../helpers/tokens");
 const { query, closeDb } = require("../../config/db");
+const { db } = require("../jest.setup");
 
 describe("Auth Routes Test", () => {
   beforeEach(async () => {

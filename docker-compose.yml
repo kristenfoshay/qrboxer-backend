@@ -3,9 +3,9 @@ services:
   db:
     image: postgres:14
     environment:
-      - POSTGRES_USER=${DB_USER:-postgres}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
-      - POSTGRES_DB=${DB_NAME:-qrboxer}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: qrboxer
     ports:
       - "5432:5432"
     volumes:
@@ -28,9 +28,9 @@ services:
       - NODE_ENV=development
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_USER=${DB_USER:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - DB_NAME=${DB_NAME:-qrboxer}
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=qrboxer
       - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
       - PORT=3001
     ports:
@@ -54,18 +54,29 @@ services:
       - server
     networks:
       - app-network
+      
+  client-tests:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.test
+    environment:
+      - CI=true
+    depends_on:
+      - client
+    networks:
+      - app-network
 
   test-db:
     image: postgres:14
     environment:
       POSTGRES_USER: test_user
       POSTGRES_PASSWORD: test_password
-      POSTGRES_DB: test_db
+      POSTGRES_DB: qrboxer_test
     volumes:
       - test-db-data:/var/lib/postgresql/data
       - ./server/db/qrboxer-schema.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U test_user -d test_db"]
+      test: ["CMD-SHELL", "pg_isready -U test_user -d qrboxer_test"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -79,6 +90,7 @@ services:
       dockerfile: Dockerfile.test
     environment:
       - NODE_ENV=test
+      - DOCKER_ENV=true
       - DB_HOST=test-db
       - DB_PORT=5432
       - DB_USER=test_user

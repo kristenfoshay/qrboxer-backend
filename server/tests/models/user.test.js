@@ -26,7 +26,9 @@ describe("User Model Tests", () => {
       const user = await User.authenticate("testuser", "password123");
       expect(user).toEqual({
         username: "testuser",
-        email: "test@test.com"
+        email: "test@test.com",
+        firstname: null,
+        lastname: null
       });
     });
 
@@ -61,7 +63,10 @@ describe("User Model Tests", () => {
       const user = await User.register(newUser);
       expect(user).toEqual({
         username: "newuser",
-        email: "new@test.com"
+        email: "new@test.com",
+        admin: false,
+        firstname: null,
+        lastname: null
       });
     });
 
@@ -98,13 +103,17 @@ describe("User Model Tests", () => {
           username: "user1",
           password: expect.any(String),
           email: "user1@test.com",
-          admin: false
+          admin: false,
+          firstname: null,
+          lastname: null
         },
         {
           username: "user2",
           password: expect.any(String),
           email: "user2@test.com",
-          admin: false
+          admin: false,
+          firstname: null,
+          lastname: null
         }
       ]);
     });
@@ -123,6 +132,8 @@ describe("User Model Tests", () => {
         username: "testuser",
         email: "test@test.com",
         admin: false,
+        firstname: null,
+        lastname: null,
         moves: [
           {
             id: expect.any(Number),
@@ -155,7 +166,9 @@ describe("User Model Tests", () => {
       expect(user).toEqual({
         username: "testuser",
         email: "new@test.com",
-        admin: false
+        admin: false,
+        firstname: null,
+        lastname: null
       });
     });
   });

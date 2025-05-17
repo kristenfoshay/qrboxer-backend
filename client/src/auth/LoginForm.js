@@ -58,23 +58,25 @@ function LoginForm({ login }) {
       <Form className="Login" onSubmit={handleSubmit}>
         <Form.Label>My Account</Form.Label>
         <br></br>
-        <Form.Group size="md" controlId="username">
-          <Form.Label>Username</Form.Label>
+        <Form.Group size="md">
+          <Form.Label htmlFor="username">Username</Form.Label>
           <Form.Control
-            autoFocus
-            type="username"
-            name="username"
             id="username"
+            autoFocus
+            type="text"
+            name="username"
+            value={formData.username}
             placeholder="Username"
             onChange={handleChange}
           />
         </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
+        <Form.Group size="lg">
+          <Form.Label htmlFor="password">Password</Form.Label>
           <Form.Control
+            id="password"
             type="password"
             name="password"
-            id="password"
+            value={formData.password}
             placeholder="Password"
             onChange={handleChange}
           />

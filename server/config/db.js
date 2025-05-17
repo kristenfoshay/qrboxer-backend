@@ -1,17 +1,33 @@
 const { Client } = require("pg");
+const { getDatabaseUri } = require("./config");
 
 let db;
 
 async function getDatabase() {
   if (!db) {
-    db = new Client({
-      host: process.env.DB_HOST || "localhost",
-      port: process.env.DB_PORT || 5432,
-      user: process.env.DB_USER || "postgres",
-      password: process.env.DB_PASSWORD || "postgres",
-      database: process.env.NODE_ENV === "test" ? "test_db" : (process.env.DB_NAME || "qrboxer")
-    });
-    await db.connect();
+    const connectionString = getDatabaseUri();
+    
+    if (connectionString.startsWith('postgresql://')) {
+      // Use connection string directly
+      db = new Client({ connectionString });
+    } else {
+      // Use individual connection parameters
+      db = new Client({
+        host: process.env.DB_HOST || "localhost",
+        port: process.env.DB_PORT || 5432,
+        user: process.env.DB_USER || "postgres",
+        password: process.env.DB_PASSWORD || "postgres",
+        database: process.env.DB_NAME || connectionString
+      });
+    }
+    
+    try {
+      await db.connect();
+      console.log("Database connected successfully");
+    } catch (err) {
+      console.error("Failed to connect to database:", err);
+      throw err;
+    }
   }
   return db;
 }

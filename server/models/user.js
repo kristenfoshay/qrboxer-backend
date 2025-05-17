@@ -18,7 +18,9 @@ class User {
     const result = await query(
       `SELECT username,
                   password,
-                  email
+                  email,
+                  firstName,
+                  lastName
            FROM users
            WHERE username = $1`,
       [username],
@@ -39,7 +41,7 @@ class User {
   }
 
   static async register(
-    { username, password, email }) {
+    { username, password, email, firstName, lastName }) {
     const duplicateCheck = await query(
       `SELECT username
            FROM users
@@ -57,13 +59,19 @@ class User {
       `INSERT INTO users
            (username,
             password,
-            email)
-           VALUES ($1, $2, $3)
-           RETURNING username, email`,
+            email,
+            firstName,
+            lastName,
+            admin)
+           VALUES ($1, $2, $3, $4, $5, $6)
+           RETURNING username, email, firstName, lastName, admin`,
       [
         username,
         hashedPassword,
-        email
+        email,
+        firstName,
+        lastName,
+        false  // default to non-admin
       ],
     );
 
@@ -86,7 +94,9 @@ class User {
     const userRes = await query(
       `SELECT username,
                   email,
-                  admin
+                  admin,
+                  firstName,
+                  lastName
            FROM users
            WHERE username = $1`,
       [username],
@@ -127,7 +137,9 @@ class User {
                       WHERE username = ${usernameVarIdx} 
                       RETURNING username,
                                 email,
-                                admin`;
+                                admin,
+                                firstName,
+                                lastName`;
     const result = await query(querySql, [...values, username]);
     const user = result.rows[0];
 

@@ -1,6 +1,7 @@
 const { query, closeDb } = require("../../config/db");
 const { NotFoundError } = require("../../expressError");
 const Box = require("../../models/box");
+const { db } = require("../jest.setup");
 
 describe("Box Model Tests", () => {
   let testMoveId;

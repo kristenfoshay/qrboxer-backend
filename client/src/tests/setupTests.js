@@ -51,8 +51,9 @@ jest.mock('jsonwebtoken', () => ({
 // Silence console errors during tests
 global.console = {
   ...console,
-  // Comment out log for test clarity
+  // Comment out for test clarity
   log: jest.fn(),
+  debug: jest.fn(),
   error: jest.fn(),
   // warn: jest.fn(),
 };

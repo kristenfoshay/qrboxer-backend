@@ -5,6 +5,7 @@ const app = require("../../app");
 const Item = require("../../models/item");
 const { NotFoundError } = require("../../expressError");
 const { query, closeDb } = require("../../config/db");
+const { db } = require("../jest.setup");
 
 // Mock the Item model
 jest.mock("../../models/item");

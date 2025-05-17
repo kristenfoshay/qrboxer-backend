@@ -73,8 +73,15 @@ class QRBoxerApi {
   }
 
   static async signup(data) {
-    let res = await this.request(`auth/register`, data, "post");
-    return res.token;
+    console.log("API - signup - Sending request to auth/register");
+    try {
+      let res = await this.request(`auth/register`, data, "post");
+      console.log("API - signup - Successful response:", res);
+      return res.token;
+    } catch (error) {
+      console.error("API - signup - Error details:", error);
+      throw error;
+    }
   }
 
   static async createmove(data) {

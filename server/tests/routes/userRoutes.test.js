@@ -2,7 +2,8 @@ const request = require("supertest");
 const app = require("../../app");
 const User = require("../../models/user");
 const { createToken } = require("../../helpers/tokens");
-const { db } = require("../../config/db");
+const { query, closeDb } = require("../../config/db");
+const { db } = require("../jest.setup");
 
 jest.mock("../../models/user");
 jest.mock("../../helpers/tokens");

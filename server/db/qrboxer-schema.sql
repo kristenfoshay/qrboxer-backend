@@ -2,7 +2,9 @@ CREATE TABLE users (
   username VARCHAR(25) PRIMARY KEY,
   password TEXT NOT NULL,
   email TEXT NOT NULL CHECK (position('@' IN email) > 1),
-  admin BOOLEAN NOT NULL DEFAULT FALSE
+  admin BOOLEAN NOT NULL DEFAULT FALSE,
+  firstName VARCHAR(30),
+  lastName VARCHAR(30)
 );
 
 CREATE TABLE moves (

@@ -9,10 +9,12 @@ const PORT = +process.env.PORT || 3001;
 // Use dev database, testing database, or via env var, production database
 function getDatabaseUri() {
   if (process.env.NODE_ENV === "test") {
-    return "postgresql://test_user:test_password@test-db:5432/test_db";
+    // When running in Docker, use test-db container, otherwise use localhost
+    const host = process.env.DOCKER_ENV ? "test-db" : "localhost";
+    return process.env.DATABASE_URL || `postgresql://${process.env.DB_USER || "postgres"}:${process.env.DB_PASSWORD || "postgres"}@${host}:${process.env.DB_PORT || 5432}/qrboxer_test`;
   }
   if (process.env.NODE_ENV === "development") {
-    return `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+    return `postgresql://${process.env.DB_USER || "postgres"}:${process.env.DB_PASSWORD || "postgres"}@${process.env.DB_HOST || "localhost"}:${process.env.DB_PORT || 5432}/${process.env.DB_NAME || "qrboxer"}`;
   }
   return process.env.DATABASE_URL || "qrboxer";
 }

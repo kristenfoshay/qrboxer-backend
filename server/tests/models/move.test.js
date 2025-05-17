@@ -5,6 +5,7 @@ const {
     commonBeforeEach,
     commonAfterEach,
     commonAfterAll,
+    db
 } = require("../jest.setup");  
 const { query, closeDb } = require("../../config/db");
 const Move = require("../../models/move");

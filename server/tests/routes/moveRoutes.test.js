@@ -3,6 +3,7 @@ const app = require("../../app");
 const Move = require("../../models/move");
 const Box = require("../../models/box");
 const { NotFoundError, BadRequestError } = require("../../expressError");
+const { db } = require("../jest.setup");
 
 jest.mock("../../models/move");
 jest.mock("../../models/box");

@@ -1,8 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { MemoryRouter } from 'react-router-dom';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+// Mock useLocalStorage to provide test token
+jest.mock('./useLocalStorage', () => ({
+  __esModule: true,
+  default: () => ["test-token", jest.fn()]
+}));
+
+test('renders App component', () => {
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>
+  );
 });

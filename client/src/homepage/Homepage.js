@@ -12,7 +12,7 @@ function Homepage() {
     return (
       <div id="loggedout">
         <h1 size="lg">QRBoxer</h1>
-        <p1>What's in your Box??</p1>
+        <p>What's in your Box??</p>
         <br></br>
         <Button block="true" size="lg" href="/login">
           Login

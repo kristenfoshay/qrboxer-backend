@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../../app");
 const { query, closeDb } = require("../../config/db");
 const Box = require("../../models/box");
+const { db } = require("../jest.setup");
 
 describe("Box Routes Automated Tests", () => {
   let testMoveId;

@@ -42,12 +42,14 @@ function App() {
   }, [token]);
 
   async function signup(signupData) {
+    console.log("App - signup - Starting signup with data:", {...signupData, password: "[REDACTED]"});
     try {
       let token = await QRBoxerApi.signup(signupData);
+      console.log("App - signup - Received token:", token);
       setToken(token);
       return { success: true };
     } catch (errors) {
-      console.error("signup failed", errors);
+      console.error("App - signup failed", errors);
       return { success: false, errors };
     }
   }
