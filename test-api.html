@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Test API Connection</h1>
+    <button id="testBtn">Test API Connection</button>
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+    <script>
+        document.getElementById('testBtn').addEventListener('click', async function() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing API connection...';
+            
+            try {
+                // This just tests if the server responds to a basic request
+                const response = await fetch('http://192.168.40.7:3001/auth/register', {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                resultDiv.innerHTML = `
+                    <p style="color: green;">Connection successful!</p>
+                    <p>Status: ${response.status}</p>
+                    <p>Headers: ${JSON.stringify(Object.fromEntries([...response.headers]), null, 2)}</p>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p style="color: red;">Connection failed!</p>
+                    <p>Error: ${error.message}</p>
+                    <p>This could indicate a CORS issue or that the server is not accessible.</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

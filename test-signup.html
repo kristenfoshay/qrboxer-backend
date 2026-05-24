@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Registration</title>
+</head>
+<body>
+    <h1>Test Registration</h1>
+    <form id="signupForm">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="zachchoi3" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" value="password123" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="zach3@example.com" required>
+        </div>
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" value="Zach" required>
+        </div>
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" value="Choi" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const userData = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                email: document.getElementById('email').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value
+            };
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Sending request...';
+
+            try {
+                const response = await fetch('http://192.168.40.7:3001/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const responseData = await response.json();
+                console.log('Response:', responseData);
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<div style="color: green;">Registration successful!</div><pre>' + JSON.stringify(responseData, null, 2) + '</pre>';
+                } else {
+                    resultDiv.innerHTML = '<div style="color: red;">Registration failed!</div><pre>' + JSON.stringify(responseData, null, 2) + '</pre>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '<div style="color: red;">Error: ' + error.message + '</div>';
+            }
+        });
+    </script>
+</body>
+</html>
