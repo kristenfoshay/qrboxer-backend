@@ -18,6 +18,10 @@ COPY config-overrides.js ./
 # Copy the rest of your application code
 COPY . .
 
+# Accept build argument for API URL
+ARG REACT_APP_BASE_URL
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+
 # Build the app
 RUN npm run build
 

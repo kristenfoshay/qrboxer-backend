@@ -9,11 +9,11 @@ class Move {
     const duplicateCheck = await query(
       `SELECT date
        FROM moves
-       WHERE date = $1`,
-      [date]);
+       WHERE date = $1 AND username = $2`,
+      [date, username]);
 
     if (duplicateCheck.rows[0])
-      throw new BadRequestError(`Duplicate move: ${date}`);
+      throw new BadRequestError(`You already have a move scheduled for ${date}`);
 
     const result = await query(
       `INSERT INTO moves

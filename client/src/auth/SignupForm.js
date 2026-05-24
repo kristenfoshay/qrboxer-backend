@@ -33,9 +33,10 @@ function SignupForm({ signup }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log("SignupForm - handleSubmit - Form data:", formData);
+    console.log("SignupForm - handleSubmit - Form data:", {...formData, password: "[REDACTED]"});
     
     try {
+      console.log("SignupForm - Attempting to call signup function");
       let result = await signup(formData);
       console.log("SignupForm - handleSubmit - Result:", result);
 
@@ -46,12 +47,12 @@ function SignupForm({ signup }) {
       } else {
         console.error("SignupForm - Registration failed:", result.errors);
         setIsValid(false);
-        setFormErrors(result.errors);
+        setFormErrors(result.errors || ["Unknown registration error"]);
       }
     } catch (error) {
       console.error("SignupForm - Unhandled error during signup:", error);
       setIsValid(false);
-      setFormErrors(["An unexpected error occurred"]);
+      setFormErrors(Array.isArray(error) ? error : [`Error: ${error.toString()}`]);
     }
   }
 
@@ -61,7 +62,14 @@ function SignupForm({ signup }) {
 
       <div> {isValid
         ? null
-        : <Alert variant="danger">{formErrors.length ? formErrors.join(", ") : "Registration failed. Please try again."}</Alert>
+        : <Alert variant="danger">
+            <p><strong>Registration failed:</strong></p>
+            {formErrors.length ? 
+              <ul>
+                {formErrors.map((err, idx) => <li key={idx}>{err}</li>)}
+              </ul> 
+              : "Please check your information and try again."}
+          </Alert>
       }
 
       </div>

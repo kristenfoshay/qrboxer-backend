@@ -8,20 +8,30 @@ import CreateaBox from "../boxes/CreateaBox";
 function Move({ createbox }) {
   let { id } = useParams();
   const [move, setMove] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getMoveBoxes() {
-      let move = await QRBoxerApi.getMove(id);
-      console.log(move);
-      setMove(move);
+      try {
+        setLoading(true);
+        let move = await QRBoxerApi.getMove(id);
+        console.log(move);
+        setMove(move);
+      } catch (err) {
+        console.error("Error loading move:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     getMoveBoxes();
   }, [id]);
 
-  if (!move) return;
-
-  id = Object(id);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading move: {error.toString()}</p>;
+  if (!move) return <p>Move not found</p>;
 
   return (
     <div className="Move col-md-8 offset-md-2">

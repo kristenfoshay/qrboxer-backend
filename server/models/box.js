@@ -6,6 +6,8 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Box {
   static async create({ name, description, location, room, move }) {
+    const boxName = name || `${room} Box`;
+
     const createResult = await query(
       `INSERT INTO boxes (name,
                          description,
@@ -15,9 +17,9 @@ class Box {
            VALUES ($1, $2, $3, $4, $5)
            RETURNING id, name, description, location, room, move`,
       [
-        name,
-        description,
-        location,
+        boxName,
+        description || null,
+        location || null,
         room,
         move
       ]);

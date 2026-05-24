@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-//import QRBoxerApi from "../api/api";
 
 
 function CreateanItem({ createitem, box }) {
@@ -16,23 +15,9 @@ function CreateanItem({ createitem, box }) {
     box: box
   }
 
-  //let [boxes, setBoxes] = useState(null);
-
   const [formData, setFormData] = useState(INITIAL_STATE);
 
   const [formErrors, setFormErrors] = useState([]);
-
-  // useEffect(() => {
-  //   async function getBoxesItems() {
-
-  //     let boxes = await QRBoxerApi.getBoxes();
-  //     console.log(boxes);
-  //     setBoxes(boxes);
-  //   }
-  //   getBoxesItems();
-  // }, []);
-
-  // if (!boxes) return <p> No Boxes yet! </p>;
 
   console.debug(
     "CreateItemForm",

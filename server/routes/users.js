@@ -8,7 +8,6 @@ const userNewSchema = require("../schemas/userRegister.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
 const router = express.Router();
 
-// Custom validation function for email
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -23,12 +22,12 @@ router.post("/", async function (req, res, next) {
     }
     const user = await User.register(req.body);
     const token = createToken(user);
-    return res.status(201).json({ 
+    return res.status(201).json({
       user: {
         username: user.username,
         email: user.email
-      }, 
-      token 
+      },
+      token
     });
   } catch (err) {
     return next(err);
@@ -55,12 +54,10 @@ router.get("/:username", async function (req, res, next) {
 
 router.patch("/:username", async function (req, res, next) {
   try {
-    // Check if request body is empty
     if (Object.keys(req.body).length === 0) {
       return res.status(400).json({ error: "No update data provided" });
     }
 
-    // Validate email if present
     if (req.body.email && !validateEmail(req.body.email)) {
       return res.status(400).json({ error: "Invalid email format" });
     }
@@ -70,11 +67,10 @@ router.patch("/:username", async function (req, res, next) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
-    
+
     const user = await User.update(req.params.username, req.body);
     return res.json({ user });
   } catch (err) {
-    // If User update fails (likely due to non-existent user)
     return res.status(404).json({ error: "User not found" });
   }
 });

@@ -5,7 +5,6 @@ import { MemoryRouter } from 'react-router-dom';
 import Routes from '../routes-nav/Routes';
 import UserContext from '../UserContext';
 
-// Mock the components used in Routes
 jest.mock('../homepage/Homepage', () => () => <div>Homepage</div>);
 jest.mock('../auth/LoginForm', () => ({ login }) => <div>Login Form</div>);
 jest.mock('../auth/SignupForm', () => ({ signup }) => <div>Signup Form</div>);
@@ -19,19 +18,18 @@ jest.mock('../boxes/Printlabel', () => () => <div>Print Label</div>);
 jest.mock('../items/Item', () => () => <div>Single Item</div>);
 jest.mock('../profiles/ProfileForm', () => () => <div>Edit Profile</div>);
 
-// Helper function to render Routes with provided path and user context
 const renderWithRouter = (path, currentUser = null) => {
   return render(
     <UserContext.Provider value={{ currentUser }}>
       <MemoryRouter initialEntries={[path]}>
-        <Routes 
-          login={() => {}} 
-          signup={() => {}} 
-          createmove={() => {}} 
-          createbox={() => {}} 
-          createitem={() => {}} 
-          removebox={() => {}} 
-          removeitem={() => {}} 
+        <Routes
+          login={() => {}}
+          signup={() => {}}
+          createmove={() => {}}
+          createbox={() => {}}
+          createitem={() => {}}
+          removebox={() => {}}
+          removeitem={() => {}}
         />
       </MemoryRouter>
     </UserContext.Provider>

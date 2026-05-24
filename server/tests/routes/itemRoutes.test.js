@@ -1,5 +1,3 @@
-// tests/itemRoutes.test.js
-
 const request = require("supertest");
 const app = require("../../app");
 const Item = require("../../models/item");
@@ -7,7 +5,6 @@ const { NotFoundError } = require("../../expressError");
 const { query, closeDb } = require("../../config/db");
 const { db } = require("../jest.setup");
 
-// Mock the Item model
 jest.mock("../../models/item");
 
 describe("Item Routes Test", () => {
@@ -15,7 +12,6 @@ describe("Item Routes Test", () => {
     jest.clearAllMocks();
   });
 
-  /************************************** POST /items */
   describe("POST /items", () => {
     test("works: creates a new item", async () => {
       const newItem = {
@@ -24,7 +20,6 @@ describe("Item Routes Test", () => {
         image: "test.jpg"
       };
 
-      // Mock successful creation
       Item.create.mockResolvedValue({
         id: 1,
         ...newItem
@@ -44,8 +39,6 @@ describe("Item Routes Test", () => {
     });
 
     test("bad request with missing data", async () => {
-      // Don't need to mock here - should fail validation before hitting model
-
       const resp = await request(app)
         .post("/items")
         .send({
@@ -56,8 +49,6 @@ describe("Item Routes Test", () => {
     });
 
     test("bad request with invalid data type", async () => {
-      // Don't need to mock here - should fail validation before hitting model
-
       const resp = await request(app)
         .post("/items")
         .send({
@@ -69,7 +60,6 @@ describe("Item Routes Test", () => {
     });
   });
 
-  /************************************** GET /items */
   describe("GET /items", () => {
     test("works: gets all items", async () => {
       const mockItems = [
@@ -115,7 +105,6 @@ describe("Item Routes Test", () => {
     });
   });
 
-  /************************************** GET /items/:id */
   describe("GET /items/:id", () => {
     test("works: gets item by id", async () => {
       Item.get.mockResolvedValue({
@@ -139,13 +128,12 @@ describe("Item Routes Test", () => {
 
     test("not found for non-existent item", async () => {
       Item.get.mockRejectedValue(new NotFoundError("No item: 0"));
-      
+
       const resp = await request(app).get("/items/0");
       expect(resp.statusCode).toBe(404);
     });
   });
 
-  /************************************** PATCH /items/:id */
   describe("PATCH /items/:id", () => {
     test("works: updates item", async () => {
       const updateData = {
@@ -195,7 +183,6 @@ describe("Item Routes Test", () => {
     });
   });
 
-  /************************************** DELETE /items/:id */
   describe("DELETE /items/:id", () => {
     test("works: deletes item", async () => {
       Item.remove.mockResolvedValue(undefined);
@@ -214,8 +201,8 @@ describe("Item Routes Test", () => {
   });
 
   afterAll(async () => {
-  await closeDb();  // Close database connection
+  await closeDb();
   jest.resetModules();
   jest.clearAllMocks();
-}); 
+});
 });

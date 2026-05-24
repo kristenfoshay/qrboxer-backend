@@ -46,6 +46,14 @@ function CreateaBox({ createbox, move }) {
         <h1>Create a New Box</h1>
       </div>
 
+      {formErrors.length > 0 && (
+        <div className="alert alert-danger">
+          {formErrors.map((error, idx) => (
+            <p key={idx} className="mb-0">{error}</p>
+          ))}
+        </div>
+      )}
+
       <Form onSubmit={handleSubmit}>
 
         <Form.Group className="ml-3">

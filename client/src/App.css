@@ -47,7 +47,6 @@
   }
 }
 
-/* Responsive padding */
 @media (max-width: 768px) {
   .main-content {
     padding-left: 15px;
@@ -55,7 +54,6 @@
   }
 }
 
-/* Buttons */
 .btn {
   border-radius: 4px;
   padding: 8px 16px;
@@ -63,16 +61,15 @@
   transition: all 0.3s ease;
 }
 
-/* Small screens */
 @media (max-width: 576px) {
   h1 {
     font-size: 1.75rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
   }
-  
+
   h3 {
     font-size: 1.25rem;
   }

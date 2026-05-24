@@ -1,12 +1,10 @@
-// tests/move.test.js
-
 const {
     commonBeforeAll,
     commonBeforeEach,
     commonAfterEach,
     commonAfterAll,
     db
-} = require("../jest.setup");  
+} = require("../jest.setup");
 const { query, closeDb } = require("../../config/db");
 const Move = require("../../models/move");
 const { BadRequestError, NotFoundError } = require("../../expressError");
@@ -18,8 +16,7 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-  /************************************** create */
-    describe("create", () => {
+describe("create", () => {
     const newMove = {
       location: "New York",
       date: "2024-06-01",
@@ -57,13 +54,12 @@ afterAll(commonAfterAll);
     });
 });
 
-  /************************************** get */
 describe("get", () => {
   test("works", async () => {
     const moveResult = await query(
       `INSERT INTO moves (location, date, username)
        VALUES ($1, $2, $3)
-       RETURNING id`, 
+       RETURNING id`,
       ["Test Location", "2024-05-01", "testuser1"]
     );
     const moveId = moveResult.rows[0].id;
@@ -71,7 +67,7 @@ describe("get", () => {
     const boxResult = await query(
       `INSERT INTO boxes (name, room, move)
        VALUES ($1, $2, $3)
-       RETURNING id`, 
+       RETURNING id`,
       ["Test Box 1", "Living Room", moveId]
     );
 
@@ -89,10 +85,9 @@ describe("get", () => {
       }]
     });
   });
-});	
+});
 
-  /************************************** update */
-  describe("update", () => {
+describe("update", () => {
   test("works", async () => {
     const result = await query(
       `INSERT INTO moves (location, date, username)
@@ -185,8 +180,7 @@ describe("get", () => {
   });
 });
 
-  /************************************** findAll */
-  describe("findAll", () => {
+describe("findAll", () => {
   test("works: finds all moves for user", async () => {
     const hashedPassword = await bcrypt.hash("password123", BCRYPT_WORK_FACTOR);
     await query(
@@ -251,8 +245,7 @@ describe("get", () => {
   });
 });
 
-  /************************************** remove */
-  describe("remove", () => {
+describe("remove", () => {
   test("works: removes move and boxes cascade", async () => {
     const result = await query(
       `INSERT INTO moves (location, date, username)
@@ -291,4 +284,3 @@ describe("get", () => {
     }
   });
 });
-

@@ -27,7 +27,6 @@
     },
     "additionalProperties": false,
     "required": [
-      "name",
       "room",
       "move"
     ]

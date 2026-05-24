@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://192.168.40.7:3002";
+console.log("API Base URL:", BASE_URL);
 
 class QRBoxerApi {
 
@@ -13,12 +14,22 @@ class QRBoxerApi {
       ? data
       : {};
 
+    console.log(`Making ${method.toUpperCase()} request to: ${url}`);
+    console.log('Request data:', data);
+    
     try {
-      return (await axios({ url, method, data, params, headers })).data;
+      const response = await axios({ url, method, data, params, headers });
+      console.log('Response:', response.data);
+      return response.data;
     } catch (err) {
-      console.error("API Error:", err.response);
-      let message = err.response.data.error.message;
-      throw Array.isArray(message) ? message : [message];
+      console.error("API Error:", err);
+      console.error("Response details:", err.response);
+      if (err.response && err.response.data && err.response.data.error) {
+        let message = err.response.data.error.message;
+        throw Array.isArray(message) ? message : [message];
+      } else {
+        throw ["Network error or server not responding. Please try again."];
+      }
     }
   }
 

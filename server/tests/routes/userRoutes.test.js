@@ -13,7 +13,6 @@ describe("User Routes Test", () => {
     jest.clearAllMocks();
   });
 
-  /************************************** POST /users */
   describe("POST /users", () => {
     test("works: creates a new user", async () => {
       const newUser = {
@@ -61,7 +60,7 @@ describe("User Routes Test", () => {
         .post("/users")
         .send({
           username: "newuser",
-          password: "pass", // too short
+          password: "pass",
           email: "not-an-email"
         });
 
@@ -69,7 +68,6 @@ describe("User Routes Test", () => {
     });
   });
 
-  /************************************** GET /users */
   describe("GET /users", () => {
     test("works: gets all users", async () => {
       User.findAll.mockResolvedValue([
@@ -114,7 +112,6 @@ describe("User Routes Test", () => {
     });
   });
 
-  /************************************** GET /users/:username */
   describe("GET /users/:username", () => {
     test("works: gets user by username", async () => {
       User.get.mockResolvedValue({
@@ -164,7 +161,6 @@ describe("User Routes Test", () => {
     });
   });
 
-  /************************************** PATCH /users/:username */
   describe("PATCH /users/:username", () => {
     test("works: updates user", async () => {
       const updateData = {
@@ -230,7 +226,6 @@ describe("User Routes Test", () => {
     });
   });
 
-  /************************************** DELETE /users/:username */
   describe("DELETE /users/:username", () => {
     test("works: deletes user", async () => {
       User.remove.mockResolvedValue(undefined);

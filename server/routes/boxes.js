@@ -3,7 +3,6 @@
 const jsonschema = require("jsonschema");
 const express = require("express");
 const { BadRequestError, NotFoundError } = require("../expressError");
-//const { ensureAdmin } = require("../middleware/auth");
 const Box = require("../models/box");
 const boxNewSchema = require("../schemas/newBox.json");
 const boxUpdateSchema = require("../schemas/updateBox.json");
@@ -78,13 +77,13 @@ router.delete("/:id", async function (req, res, next) {
   try {
     const existingBox = await Box.get(req.params.id);
     if (!existingBox) throw new NotFoundError(`No box: ${req.params.id}`);
-    
+
     await Box.remove(req.params.id);
     await Item.boxremoveitem(req.params.id);
     return res.json({ deleted: +req.params.id });
   } catch (err) {
     return next(err);
   }
-});  
+});
 
 module.exports = router;

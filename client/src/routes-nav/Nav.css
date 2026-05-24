@@ -46,7 +46,6 @@
   width: auto;
 }
 
-/* Mobile navigation */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -62,12 +61,11 @@
   border-radius: 2px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .hamburger {
     display: flex;
   }
-  
+
   .Nav1 {
     position: absolute;
     top: 60px;
@@ -81,11 +79,11 @@
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
   }
-  
+
   .Nav1.expanded {
     max-height: 400px;
   }
-  
+
   .Nav1 a {
     width: 100%;
     text-align: center;

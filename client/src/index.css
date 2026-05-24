@@ -45,7 +45,6 @@ label {
   font-weight: bold;
 }
 
-/* Responsive container classes */
 .container-fluid {
   width: 100%;
   padding-right: 15px;
@@ -62,7 +61,6 @@ label {
   margin-left: auto;
 }
 
-/* Responsive breakpoints */
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -87,7 +85,6 @@ label {
   }
 }
 
-/* Form responsiveness */
 .form-container {
   max-width: 100%;
   padding: 1rem;
@@ -100,7 +97,6 @@ label {
   }
 }
 
-/* Card grid system */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -108,7 +104,6 @@ label {
   width: 100%;
 }
 
-/* Utility classes */
 .text-center {
   text-align: center;
 }

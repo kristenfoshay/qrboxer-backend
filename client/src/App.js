@@ -8,6 +8,7 @@ import QRBoxerApi from "./api/api";
 import useLocalStorage from "./useLocalStorage";
 import UserContext from "./UserContext";
 import LoadingSpinner from "./common/LoadingSpinner";
+import ErrorBoundary from "./common/ErrorBoundary";
 
 
 function App() {
@@ -46,11 +47,15 @@ function App() {
     try {
       let token = await QRBoxerApi.signup(signupData);
       console.log("App - signup - Received token:", token);
+      if (!token) {
+        console.error("App - signup - No token received");
+        return { success: false, errors: ["No authentication token received from server"] };
+      }
       setToken(token);
       return { success: true };
     } catch (errors) {
       console.error("App - signup failed", errors);
-      return { success: false, errors };
+      return { success: false, errors: Array.isArray(errors) ? errors : ["Server error occurred"] };
     }
   }
 
@@ -135,14 +140,16 @@ function App() {
         <div className="App">
           <NavBar logout={logout} />
           <main className="App-content">
-            <Routes 
-              login={login} 
-              signup={signup} 
-              createmove={createmove} 
-              createbox={createbox} 
-              createitem={createitem} 
-              removebox={removebox} 
-              removeitem={removeitem} />
+            <ErrorBoundary>
+              <Routes
+                login={login}
+                signup={signup}
+                createmove={createmove}
+                createbox={createbox}
+                createitem={createitem}
+                removebox={removebox}
+                removeitem={removeitem} />
+            </ErrorBoundary>
           </main>
         </div>
       </UserContext.Provider>

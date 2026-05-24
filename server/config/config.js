@@ -1,15 +1,13 @@
 "use strict";
-/** Shared config for application; can be required many places. */
+
 require("dotenv").config();
 require("colors");
 
 const SECRET_KEY = process.env.SECRET_KEY || "secret-dev";
 const PORT = +process.env.PORT || 3001;
 
-// Use dev database, testing database, or via env var, production database
 function getDatabaseUri() {
   if (process.env.NODE_ENV === "test") {
-    // When running in Docker, use test-db container, otherwise use localhost
     const host = process.env.DOCKER_ENV ? "test-db" : "localhost";
     return process.env.DATABASE_URL || `postgresql://${process.env.DB_USER || "postgres"}:${process.env.DB_PASSWORD || "postgres"}@${host}:${process.env.DB_PORT || 5432}/qrboxer_test`;
   }

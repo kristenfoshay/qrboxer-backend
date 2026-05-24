@@ -32,9 +32,9 @@ services:
       - DB_PASSWORD=postgres
       - DB_NAME=qrboxer
       - SECRET_KEY=${SECRET_KEY:-dev-secret-key}
-      - PORT=3001
+      - PORT=3002
     ports:
-      - "3001:3001"
+      - "3002:3002"
     depends_on:
       db:
         condition: service_healthy
@@ -46,8 +46,10 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      args:
+        - REACT_APP_BASE_URL=http://192.168.40.7:3002
     environment:
-      - REACT_APP_BASE_URL=http://server:3001
+      - REACT_APP_BASE_URL=http://192.168.40.7:3002
     ports:
       - "3000:3000"
     depends_on:

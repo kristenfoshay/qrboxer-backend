@@ -18,12 +18,7 @@ function BoxCardList({ id, location, date }) {
     getMoveBoxes();
   }, [id]);
 
-  if (!boxes) return;
-
-  let contain = boxes;
-    
-  boxes = contain.boxes;
-    
+  if (!boxes) return <p>Loading boxes...</p>;
 
   return (
     <div className="container">

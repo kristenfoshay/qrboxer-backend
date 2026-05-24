@@ -9,7 +9,7 @@ describe("Auth Routes Test", () => {
   beforeEach(async () => {
     await query("DELETE FROM moves");
     await query("DELETE FROM users");
-    
+
     await User.register({
       username: "testuser",
       password: "password123",
@@ -20,8 +20,6 @@ describe("Auth Routes Test", () => {
   afterAll(async () => {
     await closeDb();
   });
-
-  /************************************** POST /auth/token */
 
   describe("POST /auth/token", () => {
     test("works: can login with valid credentials", async () => {
@@ -77,8 +75,6 @@ describe("Auth Routes Test", () => {
     });
   });
 
-  /************************************** POST /auth/register */
-
   describe("POST /auth/register", () => {
     test("works: can register", async () => {
       const resp = await request(app)
@@ -100,7 +96,7 @@ describe("Auth Routes Test", () => {
       const resp = await request(app)
         .post("/auth/register")
         .send({
-          username: "testuser", 
+          username: "testuser",
           password: "password123",
           firstName: "Test",
           lastName: "User",
@@ -156,16 +152,13 @@ describe("Auth Routes Test", () => {
           admin: true,
         });
       expect(resp.statusCode).toBe(201);
-      
+
       const user = await User.get("newuser");
       expect(user.admin).toBe(false);
     });
   });
 });
 
-/************************************** Test Config */
-
 jest.mock("../../helpers/tokens", () => ({
   createToken: jest.fn(() => "test-token"),
 }));
-

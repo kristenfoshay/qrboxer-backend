@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 import { MemoryRouter } from 'react-router-dom';
 
-// Mock useLocalStorage to provide test token
 jest.mock('./useLocalStorage', () => ({
   __esModule: true,
   default: () => ["test-token", jest.fn()]

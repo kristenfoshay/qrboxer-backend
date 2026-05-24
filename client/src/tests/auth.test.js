@@ -7,9 +7,8 @@ import SignupForm from '../auth/SignupForm';
 import UserContext from '../UserContext';
 
 describe('LoginForm', () => {
-  // Mock login function
   const mockLogin = jest.fn();
-  
+
   beforeEach(() => {
     mockLogin.mockClear();
   });
@@ -20,7 +19,7 @@ describe('LoginForm', () => {
         <LoginForm login={mockLogin} />
       </MemoryRouter>
     );
-    
+
     expect(screen.getByText('My Account')).toBeInTheDocument();
     expect(screen.getByLabelText('Username')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
@@ -28,23 +27,19 @@ describe('LoginForm', () => {
   });
 
   test('submitting form calls login function with form data', async () => {
-    // Mock successful login
     mockLogin.mockResolvedValue({ success: true });
-    
+
     const { getByLabelText, getByRole } = render(
       <MemoryRouter>
         <LoginForm login={mockLogin} />
       </MemoryRouter>
     );
-    
-    // Fill out the form
+
     fireEvent.change(getByLabelText('Username'), { target: { value: 'testuser' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password123' } });
-    
-    // Submit the form
+
     fireEvent.click(getByRole('button', { name: /login/i }));
-    
-    // Check if login was called with correct data
+
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith({
         username: 'testuser',
@@ -54,33 +49,27 @@ describe('LoginForm', () => {
   });
 
   test('displays error message on failed login', async () => {
-    // Mock failed login
     mockLogin.mockResolvedValue({ success: false, errors: ['Invalid credentials'] });
-    
+
     const { getByLabelText, getByRole } = render(
       <MemoryRouter>
         <LoginForm login={mockLogin} />
       </MemoryRouter>
     );
-    
-    // Fill out the form
+
     fireEvent.change(getByLabelText('Username'), { target: { value: 'wronguser' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'wrongpass' } });
-    
-    // Submit the form
+
     fireEvent.click(getByRole('button', { name: /login/i }));
-    
-    // Check if error message is displayed
+
     await waitFor(() => {
       expect(screen.getByText(/Oops! That password\/username combo is invalid!/i)).toBeInTheDocument();
     });
   });
 
   test('redirects to homepage on successful login', async () => {
-    // Mock successful login
     mockLogin.mockResolvedValue({ success: true });
-    
-    // Use a more complex router setup to test navigation
+
     const { getByLabelText, getByRole } = render(
       <MemoryRouter initialEntries={['/login']}>
         <Route path="/login">
@@ -91,15 +80,12 @@ describe('LoginForm', () => {
         </Route>
       </MemoryRouter>
     );
-    
-    // Fill out the form
+
     fireEvent.change(getByLabelText('Username'), { target: { value: 'testuser' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password123' } });
-    
-    // Submit the form
+
     fireEvent.click(getByRole('button', { name: /login/i }));
-    
-    // Check for redirection to homepage
+
     await waitFor(() => {
       expect(screen.getByText('Homepage')).toBeInTheDocument();
     });
@@ -107,9 +93,8 @@ describe('LoginForm', () => {
 });
 
 describe('SignupForm', () => {
-  // Mock signup function
   const mockSignup = jest.fn();
-  
+
   beforeEach(() => {
     mockSignup.mockClear();
   });
@@ -120,7 +105,7 @@ describe('SignupForm', () => {
         <SignupForm signup={mockSignup} />
       </MemoryRouter>
     );
-    
+
     expect(screen.getByText('Create an Account')).toBeInTheDocument();
     expect(screen.getByLabelText('Username')).toBeInTheDocument();
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
@@ -131,26 +116,22 @@ describe('SignupForm', () => {
   });
 
   test('submitting form calls signup function with form data', async () => {
-    // Mock successful signup
     mockSignup.mockResolvedValue({ success: true });
-    
+
     const { getByLabelText, getByRole } = render(
       <MemoryRouter>
         <SignupForm signup={mockSignup} />
       </MemoryRouter>
     );
-    
-    // Fill out the form
+
     fireEvent.change(getByLabelText('Username'), { target: { value: 'newuser' } });
     fireEvent.change(getByLabelText('Email'), { target: { value: 'newuser@example.com' } });
     fireEvent.change(getByLabelText('First Name'), { target: { value: 'New' } });
     fireEvent.change(getByLabelText('Last Name'), { target: { value: 'User' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password123' } });
-    
-    // Submit the form
+
     fireEvent.click(getByRole('button', { name: /submit/i }));
-    
-    // Check if signup was called with correct data
+
     await waitFor(() => {
       expect(mockSignup).toHaveBeenCalledWith({
         username: 'newuser',
@@ -163,36 +144,30 @@ describe('SignupForm', () => {
   });
 
   test('displays error message on failed signup', async () => {
-    // Mock failed signup
     mockSignup.mockResolvedValue({ success: false, errors: ['Username already taken'] });
-    
+
     const { getByLabelText, getByRole } = render(
       <MemoryRouter>
         <SignupForm signup={mockSignup} />
       </MemoryRouter>
     );
-    
-    // Fill out the form
+
     fireEvent.change(getByLabelText('Username'), { target: { value: 'existinguser' } });
     fireEvent.change(getByLabelText('Email'), { target: { value: 'existing@example.com' } });
     fireEvent.change(getByLabelText('First Name'), { target: { value: 'Existing' } });
     fireEvent.change(getByLabelText('Last Name'), { target: { value: 'User' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password123' } });
-    
-    // Submit the form
+
     fireEvent.click(getByRole('button', { name: /submit/i }));
-    
-    // Check if error message is displayed
+
     await waitFor(() => {
       expect(screen.getByText(/Username already taken/i)).toBeInTheDocument();
     });
   });
 
   test('redirects to homepage on successful signup', async () => {
-    // Mock successful signup
     mockSignup.mockResolvedValue({ success: true });
-    
-    // Use a more complex router setup to test navigation
+
     const { getByLabelText, getByRole } = render(
       <MemoryRouter initialEntries={['/signup']}>
         <Route path="/signup">
@@ -203,18 +178,15 @@ describe('SignupForm', () => {
         </Route>
       </MemoryRouter>
     );
-    
-    // Fill out the form
+
     fireEvent.change(getByLabelText('Username'), { target: { value: 'newuser' } });
     fireEvent.change(getByLabelText('Email'), { target: { value: 'newuser@example.com' } });
     fireEvent.change(getByLabelText('First Name'), { target: { value: 'New' } });
     fireEvent.change(getByLabelText('Last Name'), { target: { value: 'User' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password123' } });
-    
-    // Submit the form
+
     fireEvent.click(getByRole('button', { name: /submit/i }));
-    
-    // Check for redirection to homepage
+
     await waitFor(() => {
       expect(screen.getByText('Homepage')).toBeInTheDocument();
     });

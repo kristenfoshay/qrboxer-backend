@@ -53,6 +53,14 @@ function CreateMoveForm({ username, createmove }) {
 
       <h2>Create a New Move</h2>
 
+      {formErrors.length > 0 && (
+        <div className="alert alert-danger">
+          {formErrors.map((error, idx) => (
+            <p key={idx} className="mb-0">{error}</p>
+          ))}
+        </div>
+      )}
+
       <br></br>
 
 

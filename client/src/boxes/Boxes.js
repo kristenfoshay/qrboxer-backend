@@ -5,8 +5,19 @@ import BoxesList from "../boxes/BoxesList";
 function Boxes() {
 
     const { currentUser } = useContext(UserContext);
+    console.log("Boxes component - currentUser:", currentUser);
 
-    let moves = currentUser.moves;
+    if (!currentUser) {
+        return (
+            <div className="Moves col-md-8 offset-md-2">
+                <h1> My Boxes </h1>
+                <p className="lead">Please log in to view your boxes.</p>
+            </div>
+        );
+    }
+
+    let moves = currentUser.moves || [];
+    console.log("Boxes component - moves:", moves);
 
     return (
         <div className="Moves col-md-8 offset-md-2">
@@ -16,7 +27,7 @@ function Boxes() {
                 ? (
                     <div className="Moves-list" style={{ height: 2000 }} >
                         {moves.map(m => (
-                            <BoxesList id={Object(m.id)} location={m.location} date={m.date} />
+                            <BoxesList key={m.id} id={m.id} location={m.location} date={m.date} />
                         ))}
                     </div>
                 ) : (

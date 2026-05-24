@@ -20,7 +20,8 @@ class User {
                   password,
                   email,
                   firstName,
-                  lastName
+                  lastName,
+                  admin
            FROM users
            WHERE username = $1`,
       [username],
@@ -71,7 +72,7 @@ class User {
         email,
         firstName,
         lastName,
-        false  // default to non-admin
+        false
       ],
     );
 

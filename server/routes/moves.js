@@ -3,7 +3,6 @@
 const jsonschema = require("jsonschema");
 const express = require("express");
 const { BadRequestError } = require("../expressError");
-//const { ensureAdmin } = require("../middleware/auth");
 const Move = require("../models/move");
 const Box = require("../models/box");
 const moveNewSchema = require("../schemas/newMove.json");

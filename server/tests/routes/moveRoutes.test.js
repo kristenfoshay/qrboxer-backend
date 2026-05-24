@@ -13,7 +13,6 @@ describe("Move Routes Test", () => {
     jest.clearAllMocks();
   });
 
-  /************************************** POST /moves */
   describe("POST /moves", () => {
     test("works: creates a new move", async () => {
       const newMove = {

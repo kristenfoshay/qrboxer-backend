@@ -1,10 +1,10 @@
 const { query, closeDb } = require("../../config/db");
 const User = require("../../models/user");
 const bcrypt = require("bcrypt");
-const { 
-  NotFoundError, 
-  BadRequestError, 
-  UnauthorizedError 
+const {
+  NotFoundError,
+  BadRequestError,
+  UnauthorizedError
 } = require("../../expressError");
 const { BCRYPT_WORK_FACTOR } = require("../../config/config");
 
@@ -12,7 +12,7 @@ describe("User Model Tests", () => {
   beforeEach(async () => {
     await query("DELETE FROM moves");
     await query("DELETE FROM users");
-    
+
     await User.register({
       username: "testuser",
       password: "password123",
@@ -20,7 +20,6 @@ describe("User Model Tests", () => {
     });
   });
 
-  /************************************** authenticate */
   describe("authenticate", () => {
     test("works with valid credentials", async () => {
       const user = await User.authenticate("testuser", "password123");
@@ -51,7 +50,6 @@ describe("User Model Tests", () => {
     });
   });
 
-  /************************************** register */
   describe("register", () => {
     const newUser = {
       username: "newuser",
@@ -81,11 +79,10 @@ describe("User Model Tests", () => {
     });
   });
 
-  /************************************** findAll */
   describe("findAll", () => {
     test("works", async () => {
       await query("DELETE FROM users");
-      
+
       await User.register({
         username: "user1",
         password: "password1",
@@ -119,7 +116,6 @@ describe("User Model Tests", () => {
     });
   });
 
-  /************************************** get */
   describe("get", () => {
     test("works", async () => {
       await query(
@@ -155,7 +151,6 @@ describe("User Model Tests", () => {
     });
   });
 
-  /************************************** update */
   describe("update", () => {
     test("works", async () => {
       const updateData = {
@@ -173,7 +168,6 @@ describe("User Model Tests", () => {
     });
   });
 
-  /************************************** remove */
   describe("remove", () => {
     test("works", async () => {
       await User.remove("testuser");

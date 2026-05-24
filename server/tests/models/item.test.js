@@ -7,19 +7,16 @@ describe("Item Model Tests", () => {
   let testBoxId;
 
   beforeEach(async () => {
-    // Clean tables in correct order
     await query("DELETE FROM items");
     await query("DELETE FROM boxes");
     await query("DELETE FROM moves");
     await query("DELETE FROM users");
 
-    // Create test user
     await query(`
       INSERT INTO users (username, password, email, admin)
       VALUES ('testuser', 'password', 'test@test.com', false)`
     );
 
-    // Create test move
     const moveRes = await query(`
       INSERT INTO moves (location, date, username)
       VALUES ('Test Location', '2024-01-01', 'testuser')
@@ -27,7 +24,6 @@ describe("Item Model Tests", () => {
     );
     const testMoveId = moveRes.rows[0].id;
 
-    // Create test box
     const boxRes = await query(`
       INSERT INTO boxes (name, room, move)
       VALUES ('Test Box', 'Living Room', $1)
@@ -115,7 +111,7 @@ describe("Item Model Tests", () => {
       box: testBoxId
     });
 
-    const items = await Item.findBoxItems(testBoxId);  // Changed from getBoxItems to findBoxItems
+    const items = await Item.findBoxItems(testBoxId);
     expect(items).toEqual([
       {
         id: expect.any(Number),

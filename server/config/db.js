@@ -6,12 +6,10 @@ let db;
 async function getDatabase() {
   if (!db) {
     const connectionString = getDatabaseUri();
-    
+
     if (connectionString.startsWith('postgresql://')) {
-      // Use connection string directly
       db = new Client({ connectionString });
     } else {
-      // Use individual connection parameters
       db = new Client({
         host: process.env.DB_HOST || "localhost",
         port: process.env.DB_PORT || 5432,
@@ -20,7 +18,7 @@ async function getDatabase() {
         database: process.env.DB_NAME || connectionString
       });
     }
-    
+
     try {
       await db.connect();
       console.log("Database connected successfully");
@@ -34,7 +32,6 @@ async function getDatabase() {
 
 async function connect() {
   const client = getDatabase();
-  // Only connect if not already connected
   if (!client._connected) {
     await client.connect();
   }
